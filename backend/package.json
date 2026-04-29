@@ -1,0 +1,17 @@
+{
+  "name": "review-panel",
+  "version": "0.0.1",
+  "description": "Admin Panel for reviews",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "node app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
