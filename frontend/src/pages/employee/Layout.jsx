@@ -11,8 +11,8 @@ export default function EmployeeLayout() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-56 bg-slate-900 text-white flex flex-col flex-shrink-0">
+    <div className="flex h-screen overflow-hidden">
+      <aside className="w-56 bg-slate-900 text-white flex flex-col flex-shrink-0 h-screen overflow-y-hidden">
         <div className="px-4 py-5 border-b border-slate-700">
           <h2 className="text-sm font-semibold text-white">Review Panel</h2>
           <span className="mt-1 inline-block text-xs bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">Employee</span>

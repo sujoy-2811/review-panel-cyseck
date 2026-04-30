@@ -5,6 +5,7 @@ export default function Users() {
   const [employees, setEmployees] = useState([])
   const [form, setForm] = useState({ name: '', email: '', password: '', department: '', role: 'employee' })
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => { fetchEmployees() }, [])
@@ -23,9 +24,13 @@ export default function Users() {
     setError('')
     setLoading(true)
     try {
+      const { role } = form
       await api.post('/employees', form)
       setForm({ name: '', email: '', password: '', department: '', role: 'employee' })
       fetchEmployees()
+      const label = role === 'admin' ? 'Admin' : 'Employee'
+      setSuccess(`${label} created! A welcome email with a password reset link has been sent.`)
+      setTimeout(() => setSuccess(''), 5000)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create employee')
     } finally {
@@ -83,6 +88,7 @@ export default function Users() {
           </button>
         </form>
         {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+        {success && <p className="mt-2 text-sm text-green-600">{success}</p>}
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
