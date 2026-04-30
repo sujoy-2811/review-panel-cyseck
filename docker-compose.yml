@@ -5,7 +5,7 @@ services:
     image: cyseck:latest
     build: .
     environment:
-      - PORT=${PORT:-8003}
+      - PORT=${PORT:-8503}
       - NODE_ENV=production
     restart: unless-stopped
     init: true
@@ -20,7 +20,7 @@ services:
       retries: 3
       start_period: 20s
     ports:
-      - "${PORT:-8003}:${PORT:-8003}"
+      - "${PORT:-8503}:${PORT:-8503}"
     env_file:
       - backend/.env
     depends_on:
