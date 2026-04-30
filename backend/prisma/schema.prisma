@@ -12,12 +12,6 @@ enum Role {
   employee
 }
 
-enum ReviewStatus {
-  pending
-  in_progress
-  completed
-}
-
 enum AssignmentStatus {
   pending
   submitted
@@ -32,7 +26,7 @@ model Employee {
   passwordHash String    @map("password_hash")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
-  deletedAt    DateTime? @map("deleted_at") // soft delete
+  deletedAt    DateTime? @map("deleted_at")
 
   reviewsAsReviewee PerformanceReview[] @relation("Reviewee")
   reviewsCreated    PerformanceReview[] @relation("CreatedBy")
@@ -42,35 +36,34 @@ model Employee {
 }
 
 model PerformanceReview {
-  id          String       @id @default(uuid())
-  employeeId  String       @map("employee_id")
-  employee    Employee     @relation("Reviewee", fields: [employeeId], references: [id], onDelete: Cascade)
-  createdById String       @map("created_by")
-  createdBy   Employee     @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  id          String    @id @default(uuid())
+  employeeId  String    @map("employee_id")
+  employee    Employee  @relation("Reviewee", fields: [employeeId], references: [id], onDelete: Cascade)
+  createdById String    @map("created_by")
+  createdBy   Employee  @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
   title       String
-  period      String       // e.g. "Q1 2026"
-  status      ReviewStatus @default(pending)
-  dueDate     DateTime?    @map("due_date")
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
+  period      String
+  dueDate     DateTime? @map("due_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   assignments ReviewAssignment[]
 
   @@map("performance_reviews")
 }
 
-
+// feedback is stored directly on the assignment
 model ReviewAssignment {
-  id            String            @id @default(uuid())
-  reviewId      String            @map("review_id")
+  id            String           @id @default(uuid())
+  reviewId      String           @map("review_id")
   review        PerformanceReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  participantId String            @map("participant_id")
-  participant   Employee          @relation("Participant", fields: [participantId], references: [id], onDelete: Cascade)
-  status        AssignmentStatus  @default(pending)
+  participantId String           @map("participant_id")
+  participant   Employee         @relation("Participant", fields: [participantId], references: [id], onDelete: Cascade)
+  status        AssignmentStatus @default(pending)
   comment       String?
-  rating        Int?              // 1-5
-  createdAt     DateTime          @default(now()) @map("created_at")
-  updatedAt     DateTime          @updatedAt @map("updated_at")
+  rating        Int?             // 1-5
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
 
   @@unique([reviewId, participantId])
   @@map("review_assignments")
