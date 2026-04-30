@@ -34,9 +34,9 @@ export default function Reviews() {
     e.preventDefault()
     setError('')
     try {
-      const { data } = await api.post('/reviews', form)
+      await api.post('/reviews', form)
       setForm({ employeeId: '', title: '', period: '' })
-      setReviews(prev => [data, ...prev])
+      await fetchReviews()
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create review')
     }
@@ -52,7 +52,7 @@ export default function Reviews() {
     try {
       await api.post(`/reviews/${assignModal.id}/assign`, { participantIds: newAssignIds })
       setAssignModal(null)
-      fetchReviews()
+      await fetchReviews()
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to assign reviewers')
     }
