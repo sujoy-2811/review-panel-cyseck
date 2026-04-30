@@ -7,8 +7,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "prisma generate && prisma migrate deploy && node server.js",
-    "dev": "prisma generate && prisma migrate dev --name init && nodemon server.js"
+    "start": "prisma generate && prisma db push && node server.js",
+    "dev": "prisma generate && prisma db push && nodemon server.js"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",
