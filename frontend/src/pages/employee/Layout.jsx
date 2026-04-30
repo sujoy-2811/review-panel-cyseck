@@ -38,11 +38,12 @@ export default function EmployeeLayout() {
           </NavLink>
         </nav>
 
-        <div className="px-4 py-3 border-t border-slate-700 flex items-center justify-between">
-          <span className="text-xs text-slate-400 truncate">{user?.name}</span>
+        <div className="px-4 py-4 border-t border-slate-700">
+          <p className="text-sm font-medium text-white truncate">{user?.name}</p>
+          <p className="text-xs text-slate-400 truncate mt-0.5">{user?.email}</p>
           <button
             onClick={handleLogout}
-            className="text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded transition-colors"
+            className="mt-3 w-full text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-2 py-1.5 rounded-lg transition-colors text-left"
           >
             Logout
           </button>
