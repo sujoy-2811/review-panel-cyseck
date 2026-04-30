@@ -16,7 +16,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(morgan("dev", { skip: (req) => req.path === '/api/health' }))
 
 app.use("/auth", authRoutes);
 app.use("/employees", employeeRoutes);
