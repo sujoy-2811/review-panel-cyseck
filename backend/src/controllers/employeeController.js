@@ -16,6 +16,7 @@ export async function create(req, res) {
   const { name, email, password, department, role } = req.body
 
   if (!name || !email || !password) return res.status(400).json({ message: 'Name, email and password are required' })
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ message: 'Invalid email address' })
 
   const exists = await prisma.employee.findUnique({ where: { email } })
   if (exists && !exists.deletedAt) return res.status(409).json({ message: 'Email already in use' })
