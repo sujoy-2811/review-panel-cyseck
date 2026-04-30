@@ -4,7 +4,10 @@ export async function getAll(req, res) {
   const reviews = await prisma.performanceReview.findMany({
     include: {
       employee: { select: { id: true, name: true } },
-      assignments: { select: { participantId: true, status: true } },
+      assignments: {
+        where: { participant: { deletedAt: null } },
+        select: { participantId: true, status: true },
+      },
     },
     orderBy: { createdAt: 'desc' },
   })
