@@ -7,7 +7,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "prisma generate && prisma migrate deploy && node server.js",
     "dev": "prisma generate && prisma migrate dev --name init && nodemon server.js"
   },
   "dependencies": {
