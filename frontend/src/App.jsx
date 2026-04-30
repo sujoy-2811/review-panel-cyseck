@@ -5,7 +5,9 @@ import Login from './pages/Login'
 import AdminLayout from './pages/admin/Layout'
 import Users from './pages/admin/Users'
 import Reviews from './pages/admin/Reviews'
+import EmployeeLayout from './pages/employee/Layout'
 import EmployeeDashboard from './pages/employee/Dashboard'
+import MyFeedback from './pages/employee/MyFeedback'
 
 export default function App() {
   return (
@@ -15,9 +17,7 @@ export default function App() {
           <Route path="/" element={<Login />} />
 
           <Route path="/admin" element={
-            <ProtectedRoute role="admin">
-              <AdminLayout />
-            </ProtectedRoute>
+            <ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>
           }>
             <Route index element={<Navigate to="users" replace />} />
             <Route path="users" element={<Users />} />
@@ -25,10 +25,11 @@ export default function App() {
           </Route>
 
           <Route path="/dashboard" element={
-            <ProtectedRoute role="employee">
-              <EmployeeDashboard />
-            </ProtectedRoute>
-          } />
+            <ProtectedRoute role="employee"><EmployeeLayout /></ProtectedRoute>
+          }>
+            <Route index element={<EmployeeDashboard />} />
+            <Route path="my-feedback" element={<MyFeedback />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
