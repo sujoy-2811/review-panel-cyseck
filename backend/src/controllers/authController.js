@@ -2,7 +2,10 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import prisma from "../db.js";
-import { sendPasswordResetEmail, sendPasswordResetSuccessEmail } from "../lib/mailer.js";
+import {
+  sendPasswordResetEmail,
+  sendPasswordResetSuccessEmail,
+} from "../lib/mailer.js";
 
 export async function forgotPassword(req, res) {
   const { email } = req.body;
@@ -14,7 +17,7 @@ export async function forgotPassword(req, res) {
   });
 
   const employee = await prisma.employee.findUnique({ where: { email } });
-  // if (!employee || employee.deletedAt) return
+  if (!employee || employee.deletedAt) return;
 
   const token = crypto.randomBytes(32).toString("hex");
   await prisma.passwordResetToken.create({
@@ -73,7 +76,7 @@ export async function resetPassword(req, res) {
 
   res.json({ message: "Password updated successfully" });
 
-  sendPasswordResetSuccessEmail({ email: record.email })
+  sendPasswordResetSuccessEmail({ email: record.email });
 }
 
 export async function login(req, res) {
