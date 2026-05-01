@@ -49,12 +49,12 @@ export default function Users() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Employees</h2>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-6">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Add Employee</h3>
-        <form onSubmit={handleCreate} className="flex flex-wrap gap-3 items-end">
+        <form onSubmit={handleCreate} className="flex flex-col sm:flex-wrap sm:flex-row gap-3 items-stretch sm:items-end">
           {[
             { placeholder: 'Name', key: 'name', type: 'text' },
             { placeholder: 'Email', key: 'email', type: 'email' },
@@ -68,13 +68,13 @@ export default function Users() {
               value={form[f.key]}
               onChange={e => setForm({ ...form, [f.key]: e.target.value })}
               required={f.key !== 'department'}
-              className="flex-1 min-w-32 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:flex-1 sm:min-w-32 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           ))}
           <select
             value={form.role}
             onChange={e => setForm({ ...form, role: e.target.value })}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="employee">Employee</option>
             <option value="admin">Admin</option>
@@ -82,7 +82,7 @@ export default function Users() {
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+            className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
           >
             {loading ? 'Adding...' : 'Add'}
           </button>
@@ -92,42 +92,44 @@ export default function Users() {
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Department</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-              <th className="px-5 py-3"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {employees.map(emp => (
-              <tr key={emp.id} className="hover:bg-gray-50">
-                <td className="px-5 py-3 text-sm font-medium text-gray-900">{emp.name}</td>
-                <td className="px-5 py-3 text-sm text-gray-600">{emp.email}</td>
-                <td className="px-5 py-3 text-sm text-gray-600">{emp.department || '—'}</td>
-                <td className="px-5 py-3">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${emp.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
-                    {emp.role}
-                  </span>
-                </td>
-                <td className="px-5 py-3 text-right">
-                  <button
-                    onClick={() => handleDelete(emp.id)}
-                    className="text-xs text-red-500 hover:text-red-700 font-medium"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[480px]">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Department</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-5 py-3"></th>
               </tr>
-            ))}
-            {employees.length === 0 && (
-              <tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-gray-400">No employees yet</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {employees.map(emp => (
+                <tr key={emp.id} className="hover:bg-gray-50">
+                  <td className="px-5 py-3 text-sm font-medium text-gray-900">{emp.name}</td>
+                  <td className="px-5 py-3 text-sm text-gray-600 max-w-[160px] truncate">{emp.email}</td>
+                  <td className="px-5 py-3 text-sm text-gray-600 hidden sm:table-cell">{emp.department || '—'}</td>
+                  <td className="px-5 py-3">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${emp.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                      {emp.role}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <button
+                      onClick={() => handleDelete(emp.id)}
+                      className="text-xs text-red-500 hover:text-red-700 font-medium"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {employees.length === 0 && (
+                <tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-gray-400">No employees yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

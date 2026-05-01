@@ -34,7 +34,7 @@ export default function EmployeeDashboard() {
   const submitted = assignments.filter(a => a.status === 'submitted')
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Dashboard</h2>
 
       <div className="grid grid-cols-2 gap-4 mb-8">
@@ -50,7 +50,7 @@ export default function EmployeeDashboard() {
           </div>
         ) : (
           pending.map(a => (
-            <div key={a.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center justify-between">
+            <div key={a.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0 sm:justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-900">{a.review?.title}</p>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -59,7 +59,7 @@ export default function EmployeeDashboard() {
               </div>
               <button
                 onClick={() => { setActive(a); setError('') }}
-                className="ml-3 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                className="w-full sm:w-auto sm:ml-3 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
               >
                 Give Feedback
               </button>
@@ -69,7 +69,7 @@ export default function EmployeeDashboard() {
       </div>
 
       {active && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setActive(null)}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" onClick={() => setActive(null)}>
           <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
             <h3 className="text-base font-semibold text-gray-900 mb-1">{active.review?.title}</h3>
             <p className="text-sm text-gray-500 mb-4">

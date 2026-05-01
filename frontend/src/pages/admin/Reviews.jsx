@@ -70,7 +70,6 @@ export default function Reviews() {
     setNewAssignIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
   }
 
-  // only employees (not admins), excluding the reviewee
   function eligibleReviewers(review) {
     const assignedIds = review.assignments?.map(a => a.participantId) || []
     return employees.filter(e => e.role === 'employee' && e.id !== review.employeeId)
@@ -78,17 +77,17 @@ export default function Reviews() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Reviews</h2>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-6">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Create Review</h3>
-        <form onSubmit={handleCreateReview} className="flex flex-wrap gap-3 items-end">
+        <form onSubmit={handleCreateReview} className="flex flex-col sm:flex-wrap sm:flex-row gap-3 items-stretch sm:items-end">
           <select
             value={form.employeeId}
             onChange={e => setForm({ ...form, employeeId: e.target.value })}
             required
-            className="flex-1 min-w-40 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:flex-1 sm:min-w-40 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select employee...</option>
             {employees.filter(e => e.role === 'employee').map(emp => (
@@ -100,18 +99,18 @@ export default function Reviews() {
             value={form.title}
             onChange={e => setForm({ ...form, title: e.target.value })}
             required
-            className="flex-1 min-w-40 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:flex-1 sm:min-w-40 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             placeholder="Period (e.g. Q1 2026)"
             value={form.period}
             onChange={e => setForm({ ...form, period: e.target.value })}
             required
-            className="flex-1 min-w-36 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:flex-1 sm:min-w-36 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
           >
             Create
           </button>
@@ -120,61 +119,63 @@ export default function Reviews() {
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Employee</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Period</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Feedback</th>
-              <th className="px-5 py-3"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {reviews.map(review => (
-              <tr key={review.id} className="hover:bg-gray-50">
-                <td className="px-5 py-3 text-sm font-medium text-gray-900">{review.title}</td>
-                <td className="px-5 py-3 text-sm text-gray-600">{review.employee?.name}</td>
-                <td className="px-5 py-3 text-sm text-gray-600">{review.period}</td>
-                <td className="px-5 py-3">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 max-w-24 bg-gray-100 rounded-full h-1.5">
-                      <div
-                        className="bg-blue-500 h-1.5 rounded-full transition-all"
-                        style={{ width: review.totalFeedback > 0 ? `${(review.feedbackGiven / review.totalFeedback) * 100}%` : '0%' }}
-                      />
-                    </div>
-                    <span className="text-xs text-gray-500">{review.feedbackGiven}/{review.totalFeedback}</span>
-                  </div>
-                </td>
-                <td className="px-5 py-3">
-                  <div className="flex gap-2 justify-end">
-                    <button
-                      onClick={() => openAssign(review)}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Assign
-                    </button>
-                    <button
-                      onClick={() => openFeedback(review.id)}
-                      className="text-xs text-gray-600 hover:text-gray-900 font-medium"
-                    >
-                      Feedback
-                    </button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[520px]">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Employee</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Period</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Feedback</th>
+                <th className="px-5 py-3"></th>
               </tr>
-            ))}
-            {reviews.length === 0 && (
-              <tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-gray-400">No reviews yet</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {reviews.map(review => (
+                <tr key={review.id} className="hover:bg-gray-50">
+                  <td className="px-5 py-3 text-sm font-medium text-gray-900">{review.title}</td>
+                  <td className="px-5 py-3 text-sm text-gray-600">{review.employee?.name}</td>
+                  <td className="px-5 py-3 text-sm text-gray-600 hidden sm:table-cell">{review.period}</td>
+                  <td className="px-5 py-3 hidden sm:table-cell">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 max-w-24 bg-gray-100 rounded-full h-1.5">
+                        <div
+                          className="bg-blue-500 h-1.5 rounded-full transition-all"
+                          style={{ width: review.totalFeedback > 0 ? `${(review.feedbackGiven / review.totalFeedback) * 100}%` : '0%' }}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-500">{review.feedbackGiven}/{review.totalFeedback}</span>
+                    </div>
+                  </td>
+                  <td className="px-5 py-3">
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={() => openAssign(review)}
+                        className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        Assign
+                      </button>
+                      <button
+                        onClick={() => openFeedback(review.id)}
+                        className="text-xs text-gray-600 hover:text-gray-900 font-medium"
+                      >
+                        Feedback
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {reviews.length === 0 && (
+                <tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-gray-400">No reviews yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Assign reviewers modal */}
       {assignModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setAssignModal(null)}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" onClick={() => setAssignModal(null)}>
           <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
             <h3 className="text-base font-semibold text-gray-900 mb-1">Assign Reviewers</h3>
             <p className="text-sm text-gray-500 mb-4">{assignModal.title}</p>
@@ -233,7 +234,7 @@ export default function Reviews() {
 
       {/* Feedback results modal */}
       {feedbackModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setFeedbackModal(null)}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" onClick={() => setFeedbackModal(null)}>
           <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()}>
             <h3 className="text-base font-semibold text-gray-900 mb-4">Feedback Results</h3>
             <div className="space-y-3 max-h-96 overflow-y-auto">

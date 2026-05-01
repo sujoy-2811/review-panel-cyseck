@@ -43,7 +43,7 @@ export default function MyFeedback() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">My Submitted Feedback</h2>
 
       {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
@@ -55,7 +55,7 @@ export default function MyFeedback() {
       ) : (
         <div className="space-y-3">
           {assignments.map(a => (
-            <div key={a.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+            <div key={a.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-900">{a.review?.title}</p>
@@ -65,7 +65,7 @@ export default function MyFeedback() {
                   <div className="mt-3 text-yellow-400 text-sm">{'★'.repeat(a.rating)}{'☆'.repeat(5 - a.rating)}</div>
                   <p className="mt-1 text-sm text-gray-700">{a.comment}</p>
                 </div>
-                <div className="flex gap-2 flex-shrink-0">
+                <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
                   <button
                     onClick={() => openEdit(a)}
                     className="px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
@@ -86,7 +86,7 @@ export default function MyFeedback() {
       )}
 
       {editing && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setEditing(null)}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" onClick={() => setEditing(null)}>
           <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
             <h3 className="text-base font-semibold text-gray-900 mb-1">Edit Feedback</h3>
             <p className="text-sm text-gray-500 mb-4">
